@@ -312,10 +312,16 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
     print("_getSelectedXFiles called with input:$input");
 
     final Completer<List<XFile>> completer = Completer<List<XFile>>();
+    
+    bool changeEventTriggered = false;
 
     // Observe the input until we can return something
     input.onChange.first.then((html.Event event) {
       print("onChange called with Event:$event");
+      
+      if (changeEventTriggered) return;
+      changeEventTriggered = true;
+
       final List<html.File>? files = _handleOnChangeEvent(event);
       print("files after onChange Event:$files");
       print("completer.isCompleted:${completer.isCompleted}");
@@ -343,7 +349,12 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
       print("onFocus called with Event:$event");
 
       if (!completer.isCompleted) {
-        completer.complete([]);
+        Future.delayed(Duration(milliseconds: 500)).then((value) {
+          if (!changeEventTriggered) {
+            changeEventTriggered = true;
+            completer.complete([]);
+          }
+        });
       }
     });
 
