@@ -329,6 +329,46 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
       }
     });
 
+    input.onAbort.first.then((html.Event event) {
+      print("onAbort called with Event:$event");
+
+      if (!completer.isCompleted) {
+        completer.complete([]);
+      }
+    });
+
+    input.onEmptied.first.then((html.Event event) {
+      print("onEmptied called with Event:$event");
+
+      if (!completer.isCompleted) {
+        completer.complete([]);
+      }
+    });
+
+    input.onSuspend.first.then((html.Event event) {
+      print("onSuspend called with Event:$event");
+
+      if (!completer.isCompleted) {
+        completer.complete([]);
+      }
+    });
+
+    input.onInvalid.first.then((html.Event event) {
+      print("onInvalid called with Event:$event");
+
+      if (!completer.isCompleted) {
+        completer.complete([]);
+      }
+    });
+
+    input.onInput.first.then((html.Event event) {
+      print("onInput called with Event:$event");
+
+      if (!completer.isCompleted) {
+        completer.complete([]);
+      }
+    });
+
     input.onError.first.then((html.Event event) {
       print("onError called with Event:$event");
       if (!completer.isCompleted) {
