@@ -217,14 +217,20 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
     bool multiple = false,
   }) {
     print("getFiles called with accept:$accept, capture:$capture, multiple:$multiple");
-    final html.FileUploadInputElement input = createInputElement(
+    final html.FileUploadInputElement? input = createInputElement(
       accept,
       capture,
       multiple: multiple,
-    ) as html.FileUploadInputElement;
-    _injectAndActivate(input);
+    ) as html.FileUploadInputElement?;
 
-    return _getSelectedXFiles(input);
+    if(input != null) {
+      _injectAndActivate(input);
+
+      return _getSelectedXFiles(input);
+    }
+    else {
+      return Future.value(<XFile>[]);
+    }
   }
 
   // DOM methods
@@ -285,6 +291,8 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
 
   /// Monitors an <input type="file"> and returns the selected file(s).
   Future<List<XFile>> _getSelectedXFiles(html.FileUploadInputElement input) {
+    print("_getSelectedXFiles called with input:$input");
+
     final Completer<List<XFile>> completer = Completer<List<XFile>>();
     // Observe the input until we can return something
     input.onChange.first.then((html.Event event) {
