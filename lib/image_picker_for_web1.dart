@@ -264,8 +264,14 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
   /// Monitors an <input type="file"> and returns the selected file.
   Future<PickedFile?> _getSelectedFile(html.FileUploadInputElement input) {
     final Completer<PickedFile?> completer = Completer<PickedFile>();
+
+    bool changeEventTriggered = false;
+
     // Observe the input until we can return something
     input.onChange.first.then((html.Event event) {
+      if (changeEventTriggered) return;
+      changeEventTriggered = true;
+
       final List<html.File>? files = _handleOnChangeEvent(event);
       if (!completer.isCompleted) {
         if(files?.isNotEmpty ?? false) {
@@ -282,9 +288,12 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
     input.onFocus.first.then((html.Event event) {
       print("onFocus called with Event:$event");
 
-      if (!completer.isCompleted) {
-        completer.complete(null);
-      }
+      Future.delayed(Duration(milliseconds: 500)).then((value) {
+        if (!changeEventTriggered) {
+          changeEventTriggered = true;
+          completer.complete(null);
+        }
+      });
     });
 
     input.onError.first.then((html.Event event) {
