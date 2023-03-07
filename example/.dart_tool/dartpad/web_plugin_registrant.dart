@@ -11,6 +11,6 @@ import 'package:flutter_web_plugins/flutter_web_plugins.dart';
 
 void registerPlugins([final Registrar? pluginRegistrar]) {
   final Registrar registrar = pluginRegistrar ?? webPluginRegistrar;
-  ImagePickerPlugin.registerWith(registrar);
+  ImagePickerPlugin1.registerWith(registrar);
   registrar.registerMessageHandler();
 }
