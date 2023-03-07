@@ -131,6 +131,8 @@ class ImagePickerPlugin extends ImagePickerPlatform {
       accept: _kAcceptImageMimeType,
       capture: capture,
     );
+    print("Got files in getImage:$files");
+
     if(files.isNotEmpty) {
       return _imageResizer.resizeImageIfNeeded(
         files.first,
@@ -214,6 +216,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
     String? capture,
     bool multiple = false,
   }) {
+    print("getFiles called with accept:$accept, capture:$capture, multiple:$multiple");
     final html.FileUploadInputElement input = createInputElement(
       accept,
       capture,
@@ -285,7 +288,10 @@ class ImagePickerPlugin extends ImagePickerPlatform {
     final Completer<List<XFile>> completer = Completer<List<XFile>>();
     // Observe the input until we can return something
     input.onChange.first.then((html.Event event) {
+      print("onChange called with Event:$event");
       final List<html.File>? files = _handleOnChangeEvent(event);
+      print("files after onChange Event:$files");
+      print("completer.isCompleted:${completer.isCompleted}");
       if (!completer.isCompleted) {
         if(files != null) {
           completer.complete(files.map((html.File file) {
