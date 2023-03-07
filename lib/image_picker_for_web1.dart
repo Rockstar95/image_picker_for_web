@@ -369,6 +369,14 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
       }
     });
 
+    html.window.addEventListener('focus', (html.Event event) {
+      print("focus callback called with Event:$event");
+
+      if (!completer.isCompleted) {
+        completer.complete([]);
+      }
+    });
+    
     input.onFocus.first.then((html.Event event) {
       print("onFocus called with Event:$event");
 
