@@ -278,6 +278,15 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
         }
       }
     });
+
+    input.onFocus.first.then((html.Event event) {
+      print("onFocus called with Event:$event");
+
+      if (!completer.isCompleted) {
+        completer.complete(null);
+      }
+    });
+
     input.onError.first.then((html.Event event) {
       if (!completer.isCompleted) {
         completer.completeError(event);
@@ -318,62 +327,6 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
         else {
           completer.complete([]);
         }
-      }
-    });
-
-    input.onEnded.first.then((html.Event event) {
-      print("onEnded called with Event:$event");
-
-      if (!completer.isCompleted) {
-        completer.complete([]);
-      }
-    });
-
-    input.onAbort.first.then((html.Event event) {
-      print("onAbort called with Event:$event");
-
-      if (!completer.isCompleted) {
-        completer.complete([]);
-      }
-    });
-
-    input.onEmptied.first.then((html.Event event) {
-      print("onEmptied called with Event:$event");
-
-      if (!completer.isCompleted) {
-        completer.complete([]);
-      }
-    });
-
-    input.onSuspend.first.then((html.Event event) {
-      print("onSuspend called with Event:$event");
-
-      if (!completer.isCompleted) {
-        completer.complete([]);
-      }
-    });
-
-    input.onInvalid.first.then((html.Event event) {
-      print("onInvalid called with Event:$event");
-
-      if (!completer.isCompleted) {
-        completer.complete([]);
-      }
-    });
-
-    input.onInput.first.then((html.Event event) {
-      print("onInput called with Event:$event");
-
-      if (!completer.isCompleted) {
-        completer.complete([]);
-      }
-    });
-
-    html.window.addEventListener('focus', (html.Event event) {
-      print("focus callback called with Event:$event");
-
-      if (!completer.isCompleted) {
-        completer.complete([]);
       }
     });
     
