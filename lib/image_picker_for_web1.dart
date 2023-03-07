@@ -285,15 +285,23 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
       }
     });
 
-    input.onFocus.first.then((html.Event event) {
-      print("onFocus called with Event:$event");
+    void cancelledEventListener(html.Event e) {
+      html.window.removeEventListener('focus', cancelledEventListener);
 
+      // This listener is called before the input changed event,
+      // and the `uploadInput.files` value is still null
+      // Wait for results from js to dart
       Future.delayed(Duration(milliseconds: 500)).then((value) {
         if (!changeEventTriggered) {
           changeEventTriggered = true;
           completer.complete(null);
         }
       });
+    }
+    html.window.addEventListener('focus', cancelledEventListener);
+
+    input.onFocus.first.then((html.Event event) {
+      print("onFocus called with Event:$event");
     });
 
     input.onError.first.then((html.Event event) {
@@ -345,6 +353,21 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
         }
       }
     });
+
+    void cancelledEventListener(html.Event e) {
+      html.window.removeEventListener('focus', cancelledEventListener);
+
+      // This listener is called before the input changed event,
+      // and the `uploadInput.files` value is still null
+      // Wait for results from js to dart
+      Future.delayed(Duration(milliseconds: 500)).then((value) {
+        if (!changeEventTriggered) {
+          changeEventTriggered = true;
+          completer.complete([]);
+        }
+      });
+    }
+    html.window.addEventListener('focus', cancelledEventListener);
     
     input.onFocus.first.then((html.Event event) {
       print("onFocus called with Event:$event");
