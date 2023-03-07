@@ -321,6 +321,7 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
       
       if (changeEventTriggered) return;
       changeEventTriggered = true;
+      print("changeEventTriggered:$changeEventTriggered");
 
       final List<html.File>? files = _handleOnChangeEvent(event);
       print("files after onChange Event:$files");
@@ -348,12 +349,16 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
     input.onFocus.first.then((html.Event event) {
       print("onFocus called with Event:$event");
 
-      Future.delayed(Duration(milliseconds: 500)).then((value) {
+      if(!completer.isCompleted) {
+        completer.complete([]);
+      }
+
+      /*Future.delayed(Duration(milliseconds: 500)).then((value) {
         if (!changeEventTriggered) {
           changeEventTriggered = true;
-          completer.complete([]);
+
         }
-      });
+      });*/
     });
 
     input.onError.first.then((html.Event event) {
