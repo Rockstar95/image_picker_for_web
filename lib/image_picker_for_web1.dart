@@ -348,14 +348,12 @@ class ImagePickerPlugin1 extends ImagePickerPlatform {
     input.onFocus.first.then((html.Event event) {
       print("onFocus called with Event:$event");
 
-      if (!completer.isCompleted) {
-        Future.delayed(Duration(milliseconds: 500)).then((value) {
-          if (!changeEventTriggered) {
-            changeEventTriggered = true;
-            completer.complete([]);
-          }
-        });
-      }
+      Future.delayed(Duration(milliseconds: 500)).then((value) {
+        if (!changeEventTriggered) {
+          changeEventTriggered = true;
+          completer.complete([]);
+        }
+      });
     });
 
     input.onError.first.then((html.Event event) {
