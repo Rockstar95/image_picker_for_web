@@ -170,13 +170,13 @@
       "languageVersion": "2.14"
     },
     {
-      "name": "image_picker_for_web",
+      "name": "image_picker_for_web1",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.17"
     }
   ],
-  "generated": "2023-03-07T06:29:25.207003Z",
+  "generated": "2023-03-07T06:52:48.887530Z",
   "generator": "pub",
   "generatorVersion": "2.19.0"
 }
