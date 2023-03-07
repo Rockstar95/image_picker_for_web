@@ -18,9 +18,9 @@ const String _kAcceptVideoMimeType = 'video/3gpp,video/x-m4v,video/mp4,video/*';
 /// The web implementation of [ImagePickerPlatform].
 ///
 /// This class implements the `package:image_picker` functionality for the web.
-class ImagePickerPlugin extends ImagePickerPlatform {
+class ImagePickerPlugin1 extends ImagePickerPlatform {
   /// A constructor that allows tests to override the function that creates file inputs.
-  ImagePickerPlugin({
+  ImagePickerPlugin1({
     @visibleForTesting ImagePickerPluginTestOverrides? overrides,
     @visibleForTesting ImageResizer? imageResizer,
   }) : _overrides = overrides {
@@ -38,7 +38,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
 
   /// Registers this class as the default instance of [ImagePickerPlatform].
   static void registerWith(Registrar registrar) {
-    ImagePickerPlatform.instance = ImagePickerPlugin();
+    ImagePickerPlatform.instance = ImagePickerPlugin1();
   }
 
   /// Returns a [PickedFile] with the image that was picked.

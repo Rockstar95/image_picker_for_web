@@ -27,10 +27,10 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   // Under test...
-  late ImagePickerPlugin plugin;
+  late ImagePickerPlugin1 plugin;
 
   setUp(() {
-    plugin = ImagePickerPlugin();
+    plugin = ImagePickerPlugin1();
   });
 
   testWidgets('Can select a file (Deprecated)', (WidgetTester tester) async {
@@ -41,7 +41,7 @@ void main() {
           ..createInputElement = ((_, __) => mockInput)
           ..getMultipleFilesFromInput = ((_) => <html.File>[textFile]);
 
-    final ImagePickerPlugin plugin = ImagePickerPlugin(overrides: overrides);
+    final ImagePickerPlugin1 plugin = ImagePickerPlugin1(overrides: overrides);
 
     // Init the pick file dialog...
     final Future<PickedFile?> file = plugin.pickFile();
@@ -63,7 +63,7 @@ void main() {
           ..createInputElement = ((_, __) => mockInput)
           ..getMultipleFilesFromInput = ((_) => <html.File>[textFile]);
 
-    final ImagePickerPlugin plugin = ImagePickerPlugin(overrides: overrides);
+    final ImagePickerPlugin1 plugin = ImagePickerPlugin1(overrides: overrides);
 
     // Init the pick file dialog...
     final Future<XFile?> image = plugin.getImage(source: ImageSource.camera);
@@ -96,7 +96,7 @@ void main() {
           ..getMultipleFilesFromInput =
               ((_) => <html.File>[textFile, secondTextFile]);
 
-    final ImagePickerPlugin plugin = ImagePickerPlugin(overrides: overrides);
+    final ImagePickerPlugin1 plugin = ImagePickerPlugin1(overrides: overrides);
 
     // Init the pick file dialog...
     final Future<List<XFile>?> files = plugin.getMultiImage();

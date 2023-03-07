@@ -13,7 +13,7 @@ flutter:
     implements: image_picker
     platforms:
       web:
-        pluginClass: ImagePickerPlugin
+        pluginClass: ImagePickerPlugin1
         fileName: image_picker_for_web1.dart
 
 dependencies:
