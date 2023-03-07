@@ -54,7 +54,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
   ///
   /// If no images were picked, the return value is null.
   @override
-  Future<PickedFile> pickImage({
+  Future<PickedFile?> pickImage({
     required ImageSource source,
     double? maxWidth,
     double? maxHeight,
@@ -79,7 +79,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
   ///
   /// If no images were picked, the return value is null.
   @override
-  Future<PickedFile> pickVideo({
+  Future<PickedFile?> pickVideo({
     required ImageSource source,
     CameraDevice preferredCameraDevice = CameraDevice.rear,
     Duration? maxDuration,
@@ -95,7 +95,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
   /// `capture` is only supported in mobile browsers.
   /// See https://caniuse.com/#feat=html-media-capture
   @visibleForTesting
-  Future<PickedFile> pickFile({
+  Future<PickedFile?> pickFile({
     String? accept,
     String? capture,
   }) {
@@ -118,7 +118,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
   ///
   /// If no images were picked, the return value is null.
   @override
-  Future<XFile> getImage({
+  Future<XFile?> getImage({
     required ImageSource source,
     double? maxWidth,
     double? maxHeight,
@@ -131,12 +131,17 @@ class ImagePickerPlugin extends ImagePickerPlatform {
       accept: _kAcceptImageMimeType,
       capture: capture,
     );
-    return _imageResizer.resizeImageIfNeeded(
-      files.first,
-      maxWidth,
-      maxHeight,
-      imageQuality,
-    );
+    if(files.isNotEmpty) {
+      return _imageResizer.resizeImageIfNeeded(
+        files.first,
+        maxWidth,
+        maxHeight,
+        imageQuality,
+      );
+    }
+    else {
+      return null;
+    }
   }
 
   /// Returns an [XFile] containing the video that was picked.
@@ -152,7 +157,7 @@ class ImagePickerPlugin extends ImagePickerPlatform {
   ///
   /// If no images were picked, the return value is null.
   @override
-  Future<XFile> getVideo({
+  Future<XFile?> getVideo({
     required ImageSource source,
     CameraDevice preferredCameraDevice = CameraDevice.rear,
     Duration? maxDuration,
@@ -163,12 +168,17 @@ class ImagePickerPlugin extends ImagePickerPlatform {
       accept: _kAcceptVideoMimeType,
       capture: capture,
     );
-    return files.first;
+    if(files.isNotEmpty) {
+      return files.first;
+    }
+    else {
+      return null;
+    }
   }
 
   /// Injects a file input, and returns a list of XFile that the user selected locally.
   @override
-  Future<List<XFile>> getMultiImage({
+  Future<List<XFile>?> getMultiImage({
     double? maxWidth,
     double? maxHeight,
     int? imageQuality,
@@ -243,15 +253,20 @@ class ImagePickerPlugin extends ImagePickerPlatform {
   }
 
   /// Monitors an <input type="file"> and returns the selected file.
-  Future<PickedFile> _getSelectedFile(html.FileUploadInputElement input) {
-    final Completer<PickedFile> completer = Completer<PickedFile>();
+  Future<PickedFile?> _getSelectedFile(html.FileUploadInputElement input) {
+    final Completer<PickedFile?> completer = Completer<PickedFile>();
     // Observe the input until we can return something
     input.onChange.first.then((html.Event event) {
       final List<html.File>? files = _handleOnChangeEvent(event);
-      if (!completer.isCompleted && files != null) {
-        completer.complete(PickedFile(
-          html.Url.createObjectUrl(files.first),
-        ));
+      if (!completer.isCompleted) {
+        if(files?.isNotEmpty ?? false) {
+          completer.complete(PickedFile(
+            html.Url.createObjectUrl(files!.first),
+          ));
+        }
+        else {
+          completer.complete(null);
+        }
       }
     });
     input.onError.first.then((html.Event event) {
@@ -271,18 +286,23 @@ class ImagePickerPlugin extends ImagePickerPlatform {
     // Observe the input until we can return something
     input.onChange.first.then((html.Event event) {
       final List<html.File>? files = _handleOnChangeEvent(event);
-      if (!completer.isCompleted && files != null) {
-        completer.complete(files.map((html.File file) {
-          return XFile(
-            html.Url.createObjectUrl(file),
-            name: file.name,
-            length: file.size,
-            lastModified: DateTime.fromMillisecondsSinceEpoch(
-              file.lastModified ?? DateTime.now().millisecondsSinceEpoch,
-            ),
-            mimeType: file.type,
-          );
-        }).toList());
+      if (!completer.isCompleted) {
+        if(files != null) {
+          completer.complete(files.map((html.File file) {
+            return XFile(
+              html.Url.createObjectUrl(file),
+              name: file.name,
+              length: file.size,
+              lastModified: DateTime.fromMillisecondsSinceEpoch(
+                file.lastModified ?? DateTime.now().millisecondsSinceEpoch,
+              ),
+              mimeType: file.type,
+            );
+          }).toList());
+        }
+        else {
+          completer.complete([]);
+        }
       }
     });
     input.onError.first.then((html.Event event) {
