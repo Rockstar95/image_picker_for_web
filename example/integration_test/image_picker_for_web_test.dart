@@ -7,7 +7,8 @@ import 'dart:html' as html;
 import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:image_picker_for_web1/image_picker_for_web1.dart';
+import 'package:image_picker_for_web1/image_picker_for_web1.dart' as image_picker;
+// import 'package:image_picker_for_web1/src/image_picker_plugin1.dart' if(kIsWeb) "package:image_picker_for_web1/src/image_picker_plugin1_web.dart" as image_picker;
 import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
 import 'package:integration_test/integration_test.dart';
 
@@ -27,21 +28,21 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   // Under test...
-  late ImagePickerPlugin1 plugin;
+  late image_picker.ImagePickerPlugin1 plugin;
 
   setUp(() {
-    plugin = ImagePickerPlugin1();
+    plugin = image_picker.ImagePickerPlugin1();
   });
 
   testWidgets('Can select a file (Deprecated)', (WidgetTester tester) async {
     final html.FileUploadInputElement mockInput = html.FileUploadInputElement();
 
-    final ImagePickerPluginTestOverrides overrides =
-        ImagePickerPluginTestOverrides()
+    final image_picker.ImagePickerPluginTestOverrides overrides =
+        image_picker.ImagePickerPluginTestOverrides()
           ..createInputElement = ((_, __) => mockInput)
           ..getMultipleFilesFromInput = ((_) => <html.File>[textFile]);
 
-    final ImagePickerPlugin1 plugin = ImagePickerPlugin1(overrides: overrides);
+    final image_picker.ImagePickerPlugin1 plugin = image_picker.ImagePickerPlugin1(overrides: overrides);
 
     // Init the pick file dialog...
     final Future<PickedFile?> file = plugin.pickFile();
@@ -58,12 +59,12 @@ void main() {
   testWidgets('Can select a file', (WidgetTester tester) async {
     final html.FileUploadInputElement mockInput = html.FileUploadInputElement();
 
-    final ImagePickerPluginTestOverrides overrides =
-        ImagePickerPluginTestOverrides()
+    final image_picker.ImagePickerPluginTestOverrides overrides =
+        image_picker.ImagePickerPluginTestOverrides()
           ..createInputElement = ((_, __) => mockInput)
           ..getMultipleFilesFromInput = ((_) => <html.File>[textFile]);
 
-    final ImagePickerPlugin1 plugin = ImagePickerPlugin1(overrides: overrides);
+    final image_picker.ImagePickerPlugin1 plugin = image_picker.ImagePickerPlugin1(overrides: overrides);
 
     // Init the pick file dialog...
     final Future<XFile?> image = plugin.getImage(source: ImageSource.camera);
@@ -90,13 +91,13 @@ void main() {
   testWidgets('Can select multiple files', (WidgetTester tester) async {
     final html.FileUploadInputElement mockInput = html.FileUploadInputElement();
 
-    final ImagePickerPluginTestOverrides overrides =
-        ImagePickerPluginTestOverrides()
+    final image_picker.ImagePickerPluginTestOverrides overrides =
+        image_picker.ImagePickerPluginTestOverrides()
           ..createInputElement = ((_, __) => mockInput)
           ..getMultipleFilesFromInput =
               ((_) => <html.File>[textFile, secondTextFile]);
 
-    final ImagePickerPlugin1 plugin = ImagePickerPlugin1(overrides: overrides);
+    final image_picker.ImagePickerPlugin1 plugin = image_picker.ImagePickerPlugin1(overrides: overrides);
 
     // Init the pick file dialog...
     final Future<List<XFile>?> files = plugin.getMultiImage();
